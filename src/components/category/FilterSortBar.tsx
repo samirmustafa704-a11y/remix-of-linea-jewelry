@@ -63,7 +63,7 @@ const FilterSortBar = ({ filtersOpen, setFiltersOpen, itemCount }: FilterSortBar
                     <div className="space-y-3">
                       {categories.map((category) => (
                         <div key={category} className="flex items-center space-x-3">
-                          <Checkbox id={category} className="border-border data-[state=checked]:bg-foreground data-[state=checked]:border-foreground" />
+                          <Checkbox id={category} className="border-border/60 data-[state=checked]:bg-foreground data-[state=checked]:border-foreground" />
                           <Label htmlFor={category} className="text-sm font-light text-foreground cursor-pointer">
                             {category}
                           </Label>
@@ -80,7 +80,7 @@ const FilterSortBar = ({ filtersOpen, setFiltersOpen, itemCount }: FilterSortBar
                     <div className="space-y-3">
                       {priceRanges.map((range) => (
                         <div key={range} className="flex items-center space-x-3">
-                          <Checkbox id={range} className="border-border data-[state=checked]:bg-foreground data-[state=checked]:border-foreground" />
+                          <Checkbox id={range} className="border-border/60 data-[state=checked]:bg-foreground data-[state=checked]:border-foreground" />
                           <Label htmlFor={range} className="text-sm font-light text-foreground cursor-pointer">
                             {range}
                           </Label>
@@ -97,7 +97,7 @@ const FilterSortBar = ({ filtersOpen, setFiltersOpen, itemCount }: FilterSortBar
                     <div className="space-y-3">
                       {materials.map((material) => (
                         <div key={material} className="flex items-center space-x-3">
-                          <Checkbox id={material} className="border-border data-[state=checked]:bg-foreground data-[state=checked]:border-foreground" />
+                          <Checkbox id={material} className="border-border/60 data-[state=checked]:bg-foreground data-[state=checked]:border-foreground" />
                           <Label htmlFor={material} className="text-sm font-light text-foreground cursor-pointer">
                             {material}
                           </Label>

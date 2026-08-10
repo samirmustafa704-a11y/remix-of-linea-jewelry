@@ -64,13 +64,12 @@ const ProductImageGallery = () => {
 
   return (
     <div className="w-full">
-      {/* Desktop: Vertical scrolling gallery (1024px and above) */}
       <div className="hidden lg:block">
         <div className="space-y-4">
           {productImages.map((image, index) => (
             <div 
               key={index} 
-              className="w-full aspect-square overflow-hidden cursor-pointer group"
+              className="w-full aspect-square overflow-hidden cursor-pointer group rounded-xl border border-border/10 shadow-[0_4px_20px_-6px_hsl(25_30%_15%/0.08)] hover:shadow-[0_8px_24px_-8px_hsl(25_30%_15%/0.12)] transition-all duration-300"
               onClick={() => handleImageClick(index)}
             >
               <img
@@ -87,7 +86,7 @@ const ProductImageGallery = () => {
       <div className="lg:hidden">
         <div className="relative">
           <div 
-            className="w-full aspect-square overflow-hidden cursor-pointer group touch-pan-y"
+            className="w-full aspect-square overflow-hidden cursor-pointer group touch-pan-y rounded-xl border border-border/10 shadow-[0_4px_20px_-6px_hsl(25_30%_15%/0.08)]"
             onClick={() => handleImageClick(currentImageIndex)}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}

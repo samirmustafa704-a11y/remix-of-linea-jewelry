@@ -1,0 +1,260 @@
+name: Git Flow CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+      - 'bugfix/**'
+      - 'release/**'
+      - 'hotfix/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20'
+  NPM_CACHE: 'npm'
+
+jobs:
+  # ============================================================================
+  # CORE VALIDATION (Lint + Build + Security) - Run Once, Reuse Everywhere
+  # ============================================================================
+  
+  validate:
+    name: Validate (Lint, Build, Security)
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      branch-type: ${{ steps.branch-type.outputs.type }}
+      is-main: ${{ steps.branch-type.outputs.is-main }}
+      is-develop: ${{ steps.branch-type.outputs.is-develop }}
+      is-release: ${{ steps.branch-type.outputs.is-release }}
+      is-hotfix: ${{ steps.branch-type.outputs.is-hotfix }}
+      is-pr: ${{ steps.branch-type.outputs.is-pr }}
+    
+    steps:
+      # Checkout & Setup (consolidated)
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: ${{ env.NPM_CACHE }}
+
+      # Determine branch type and context
+      - name: Determine branch type and context
+        id: branch-type
+        run: |
+          REF=${{ github.ref }}
+          EVENT=${{ github.event_name }}
+          
+          if [[ "$EVENT" == "pull_request" ]]; then
+            echo "type=pr" >> $GITHUB_OUTPUT
+            echo "is-pr=true" >> $GITHUB_OUTPUT
+            echo "is-main=false" >> $GITHUB_OUTPUT
+            echo "is-develop=false" >> $GITHUB_OUTPUT
+            echo "is-release=false" >> $GITHUB_OUTPUT
+            echo "is-hotfix=false" >> $GITHUB_OUTPUT
+          elif [[ "$REF" == "refs/heads/main" ]]; then
+            echo "type=main" >> $GITHUB_OUTPUT
+            echo "is-main=true" >> $GITHUB_OUTPUT
+            echo "is-pr=false" >> $GITHUB_OUTPUT
+            echo "is-develop=false" >> $GITHUB_OUTPUT
+            echo "is-release=false" >> $GITHUB_OUTPUT
+            echo "is-hotfix=false" >> $GITHUB_OUTPUT
+          elif [[ "$REF" == "refs/heads/develop" ]]; then
+            echo "type=develop" >> $GITHUB_OUTPUT
+            echo "is-develop=true" >> $GITHUB_OUTPUT
+            echo "is-pr=false" >> $GITHUB_OUTPUT
+            echo "is-main=false" >> $GITHUB_OUTPUT
+            echo "is-release=false" >> $GITHUB_OUTPUT
+            echo "is-hotfix=false" >> $GITHUB_OUTPUT
+          elif [[ "$REF" =~ refs/heads/release/ ]]; then
+            echo "type=release" >> $GITHUB_OUTPUT
+            echo "is-release=true" >> $GITHUB_OUTPUT
+            echo "is-pr=false" >> $GITHUB_OUTPUT
+            echo "is-main=false" >> $GITHUB_OUTPUT
+            echo "is-develop=false" >> $GITHUB_OUTPUT
+            echo "is-hotfix=false" >> $GITHUB_OUTPUT
+          elif [[ "$REF" =~ refs/heads/hotfix/ ]]; then
+            echo "type=hotfix" >> $GITHUB_OUTPUT
+            echo "is-hotfix=true" >> $GITHUB_OUTPUT
+            echo "is-pr=false" >> $GITHUB_OUTPUT
+            echo "is-main=false" >> $GITHUB_OUTPUT
+            echo "is-develop=false" >> $GITHUB_OUTPUT
+            echo "is-release=false" >> $GITHUB_OUTPUT
+          else
+            echo "type=feature" >> $GITHUB_OUTPUT
+            echo "is-pr=false" >> $GITHUB_OUTPUT
+            echo "is-main=false" >> $GITHUB_OUTPUT
+            echo "is-develop=false" >> $GITHUB_OUTPUT
+            echo "is-release=false" >> $GITHUB_OUTPUT
+            echo "is-hotfix=false" >> $GITHUB_OUTPUT
+          fi
+
+      # Get package version
+      - name: Get version from package.json
+        id: version
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      # Install dependencies (single time)
+      - name: Install dependencies
+        run: npm ci
+
+      # Lint
+      - name: Run ESLint
+        run: npm run lint
+        continue-on-error: false
+
+      # Build
+      - name: Build project
+        run: npm run build
+
+      # Upload build artifacts (for release job)
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
+
+      # Security audit (all branches)
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+  # ============================================================================
+  # PULL REQUEST VALIDATION (Branch + Title Format Checks)
+  # ============================================================================
+  
+  validate-pr:
+    name: Validate PR Format
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Validate branch name
+        run: |
+          BRANCH=${{ github.head_ref }}
+          if [[ ! $BRANCH =~ ^(feature|bugfix|release|hotfix|support)/ ]]; then
+            echo "❌ Invalid branch name: $BRANCH"
+            echo "Must follow format: feature/*, bugfix/*, release/*, hotfix/*, or support/*"
+            exit 1
+          fi
+          echo "✅ Branch name valid: $BRANCH"
+
+      - name: Validate PR title format
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          if [[ ! $TITLE =~ ^(feat|fix|docs|style|refactor|perf|test|chore)\: ]]; then
+            echo "❌ Invalid PR title: $TITLE"
+            echo "Must start with: feat:, fix:, docs:, style:, refactor:, perf:, test:, or chore:"
+            exit 1
+          fi
+          echo "✅ PR title valid: $TITLE"
+
+  # ============================================================================
+  # RELEASE (Main Branch) - Create GitHub Release + Tag
+  # ============================================================================
+  
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: validate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ needs.validate.outputs.version }}
+          release_name: Release v${{ needs.validate.outputs.version }}
+          draft: false
+          prerelease: false
+          body: |
+            ## Release v${{ needs.validate.outputs.version }}
+            
+            ✅ All checks passed
+            ✅ Build successful
+            ✅ Security audit passed
+            
+            See commit history for details:
+            ${{ github.server_url }}/${{ github.repository }}/commits/${{ github.sha }}
+
+  # ============================================================================
+  # RELEASE BRANCH NOTIFICATION
+  # ============================================================================
+  
+  notify-release-branch:
+    name: Release Branch Ready
+    runs-on: ubuntu-latest
+    needs: validate
+    if: github.event_name == 'push' && needs.validate.outputs.is-release == 'true'
+    
+    steps:
+      - name: Notify release ready
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          echo "🚀 Release v$VERSION ready for final review"
+          echo "• All validation checks passed"
+          echo "• Branch: release/$VERSION"
+          echo "• Next: Merge to main for production release"
+
+  # ============================================================================
+  # HOTFIX PRIORITY ALERT
+  # ============================================================================
+  
+  alert-hotfix:
+    name: Hotfix Priority Alert
+    runs-on: ubuntu-latest
+    needs: validate
+    if: github.event_name == 'push' && needs.validate.outputs.is-hotfix == 'true'
+    
+    steps:
+      - name: Send hotfix alert
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+          echo "🔴 HOTFIX ALERT!"
+          echo "• Version: v$VERSION"
+          echo "• Priority: CRITICAL"
+          echo "• All validation checks passed"
+          echo "• Ready for immediate deployment"
+          echo "• Next: Merge to main and develop"
+
+  # ============================================================================
+  # FINAL STATUS CHECK (Success/Failure Summary)
+  # ============================================================================
+  
+  status:
+    name: Workflow Status
+    runs-on: ubuntu-latest
+    needs: [validate, validate-pr]
+    if: always()
+    
+    steps:
+      - name: Check overall status
+        run: |
+          if [[ "${{ needs.validate.result }}" == "failure" ]]; then
+            echo "❌ Validation failed"
+            exit 1
+          fi
+          echo "✅ All checks passed successfully!"

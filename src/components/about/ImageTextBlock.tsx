@@ -19,7 +19,7 @@ const ImageTextBlock = ({
         <img 
           src={image} 
           alt={imageAlt}
-          className="w-full aspect-square lg:aspect-auto lg:h-[800px] object-cover"
+          className="w-full aspect-[4/5] lg:aspect-[3/4] object-cover rounded-xl border border-border/10 shadow-md"
         />
       </div>
       <div className="flex-1 space-y-6">

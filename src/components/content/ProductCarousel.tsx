@@ -60,7 +60,7 @@ const ProductCard = ({ product, index }: { product: Product; index: number }) =>
       <Link to={`/product/${product.id}`}>
         <Card className="border-none shadow-none bg-transparent group transition-all duration-500 hover-lift">
           <CardContent className="p-0">
-            <div className="aspect-[3/4] mb-4 overflow-hidden bg-card relative rounded-2xl shadow-[0_2px_12px_-4px_hsl(25_30%_15%/0.06)]">
+            <div className="aspect-[3/4] mb-4 overflow-hidden bg-card relative rounded-xl border border-border/10 shadow-product transition-all duration-300 group-hover:shadow-product-hover">
               <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-all duration-700 group-hover:opacity-0 group-hover:scale-105" />
               <img src={product.category === "Earrings" ? organicEarring : linkBracelet} alt={`${product.name} lifestyle`} className="absolute inset-0 w-full h-full object-cover transition-all duration-700 opacity-0 group-hover:opacity-100 group-hover:scale-105" />
               {(product.id === 1 || product.id === 3) && (
@@ -70,7 +70,7 @@ const ProductCard = ({ product, index }: { product: Product; index: number }) =>
               )}
               <button
                 onClick={handleAddToCart}
-                className="absolute bottom-3 right-3 p-2.5 bg-background/80 backdrop-blur-sm rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-background hover:scale-110 text-foreground shadow-sm"
+                className="absolute bottom-3 right-3 p-2.5 bg-background/90 backdrop-blur-sm rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-background hover:shadow-md hover:scale-110 text-foreground shadow-sm border border-border/20"
                 aria-label="Add to bag"
               >
                 <ShoppingBag size={15} />
@@ -94,9 +94,9 @@ const ProductCarousel = () => {
   return (
     <section className="w-full mb-16 px-6">
       <Carousel opts={{ align: "start", loop: false }} className="w-full">
-        <CarouselContent>
+        <CarouselContent className="gap-4 md:gap-6">
           {products.map((product, index) => (
-            <CarouselItem key={product.id} className="basis-1/2 md:basis-1/3 lg:basis-1/4 pr-2 md:pr-4">
+            <CarouselItem key={product.id} className="basis-1/2 md:basis-1/3 lg:basis-1/4 pl-0">
               <ProductCard product={product} index={index} />
             </CarouselItem>
           ))}

@@ -23,7 +23,7 @@ const SizeGuide = () => {
         
         <ContentSection title="Ring Sizing">
           <div className="space-y-8">
-            <div className="bg-muted/10 rounded-lg p-8">
+            <div className="bg-card rounded-xl border border-border/10 shadow-md p-8 transition-all duration-300">
               <h3 className="text-xl font-light text-foreground mb-6">How to Measure Your Ring Size</h3>
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-4">
@@ -46,15 +46,15 @@ const SizeGuide = () => {
               </div>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-border">
+            <div className="overflow-x-auto bg-card rounded-xl border border-border/10 shadow-md transition-all duration-300">
+              <table className="w-full border-collapse">
                 <thead>
-                  <tr className="bg-muted/20">
-                    <th className="border border-border p-3 text-left font-light">US Size</th>
-                    <th className="border border-border p-3 text-left font-light">UK Size</th>
-                    <th className="border border-border p-3 text-left font-light">EU Size</th>
-                    <th className="border border-border p-3 text-left font-light">Diameter (mm)</th>
-                    <th className="border border-border p-3 text-left font-light">Circumference (mm)</th>
+                  <tr className="bg-muted/10 border-b border-border/10">
+                    <th className="border-r border-border/10 p-3 text-left font-light">US Size</th>
+                    <th className="border-r border-border/10 p-3 text-left font-light">UK Size</th>
+                    <th className="border-r border-border/10 p-3 text-left font-light">EU Size</th>
+                    <th className="border-r border-border/10 p-3 text-left font-light">Diameter (mm)</th>
+                    <th className="p-3 text-left font-light">Circumference (mm)</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -69,12 +69,12 @@ const SizeGuide = () => {
                     { us: "8.5", uk: "Q", eu: "57", diameter: "18.4", circumference: "57.8" },
                     { us: "9", uk: "R", eu: "59", diameter: "18.8", circumference: "59.1" }
                   ].map((size, index) => (
-                    <tr key={index} className="hover:bg-muted/10">
-                      <td className="border border-border p-3">{size.us}</td>
-                      <td className="border border-border p-3">{size.uk}</td>
-                      <td className="border border-border p-3">{size.eu}</td>
-                      <td className="border border-border p-3">{size.diameter}</td>
-                      <td className="border border-border p-3">{size.circumference}</td>
+                    <tr key={index} className="hover:bg-muted/5 border-b border-border/10">
+                      <td className="border-r border-border/10 p-3">{size.us}</td>
+                      <td className="border-r border-border/10 p-3">{size.uk}</td>
+                      <td className="border-r border-border/10 p-3">{size.eu}</td>
+                      <td className="border-r border-border/10 p-3">{size.diameter}</td>
+                      <td className="p-3">{size.circumference}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -85,42 +85,42 @@ const SizeGuide = () => {
 
         <ContentSection title="Bracelet & Necklace Sizing">
           <div className="grid md:grid-cols-2 gap-12">
-            <div className="space-y-6">
+            <div className="bg-card rounded-lg border border-border/10 shadow-sm p-6 space-y-6">
               <h3 className="text-xl font-light text-foreground">Bracelet Sizes</h3>
               <div className="space-y-4">
-                <div className="flex justify-between py-2 border-b border-border">
+                <div className="flex justify-between py-3 px-4 rounded-lg bg-muted/5 border border-border/5">
                   <span className="text-muted-foreground">Small</span>
-                  <span className="text-foreground">6.5" - 7"</span>
+                  <span className="text-foreground font-light">6.5" - 7"</span>
                 </div>
-                <div className="flex justify-between py-2 border-b border-border">
+                <div className="flex justify-between py-3 px-4 rounded-lg bg-muted/5 border border-border/5">
                   <span className="text-muted-foreground">Medium</span>
-                  <span className="text-foreground">7" - 7.5"</span>
+                  <span className="text-foreground font-light">7" - 7.5"</span>
                 </div>
-                <div className="flex justify-between py-2 border-b border-border">
+                <div className="flex justify-between py-3 px-4 rounded-lg bg-muted/5 border border-border/5">
                   <span className="text-muted-foreground">Large</span>
-                  <span className="text-foreground">7.5" - 8"</span>
+                  <span className="text-foreground font-light">7.5" - 8"</span>
                 </div>
               </div>
             </div>
             
-            <div className="space-y-6">
+            <div className="bg-card rounded-lg border border-border/10 shadow-sm p-6 space-y-6">
               <h3 className="text-xl font-light text-foreground">Necklace Lengths</h3>
               <div className="space-y-4">
-                <div className="flex justify-between py-2 border-b border-border">
+                <div className="flex justify-between py-3 px-4 rounded-lg bg-muted/5 border border-border/5">
                   <span className="text-muted-foreground">Choker</span>
-                  <span className="text-foreground">14" - 16"</span>
+                  <span className="text-foreground font-light">14" - 16"</span>
                 </div>
-                <div className="flex justify-between py-2 border-b border-border">
+                <div className="flex justify-between py-3 px-4 rounded-lg bg-muted/5 border border-border/5">
                   <span className="text-muted-foreground">Princess</span>
-                  <span className="text-foreground">17" - 19"</span>
+                  <span className="text-foreground font-light">17" - 19"</span>
                 </div>
-                <div className="flex justify-between py-2 border-b border-border">
+                <div className="flex justify-between py-3 px-4 rounded-lg bg-muted/5 border border-border/5">
                   <span className="text-muted-foreground">Matinee</span>
-                  <span className="text-foreground">20" - 24"</span>
+                  <span className="text-foreground font-light">20" - 24"</span>
                 </div>
-                <div className="flex justify-between py-2 border-b border-border">
+                <div className="flex justify-between py-3 px-4 rounded-lg bg-muted/5 border border-border/5">
                   <span className="text-muted-foreground">Opera</span>
-                  <span className="text-foreground">28" - 36"</span>
+                  <span className="text-foreground font-light">28" - 36"</span>
                 </div>
               </div>
             </div>
@@ -128,16 +128,16 @@ const SizeGuide = () => {
         </ContentSection>
 
         <ContentSection title="Need Help?">
-          <div className="space-y-6">
+          <div className="bg-card rounded-xl border border-border/10 shadow-md p-8 transition-all duration-300 space-y-6">
             <p className="text-muted-foreground">
               Still unsure about sizing? Our jewelry consultants are here to help you find the perfect fit. 
               Download our printable size guide or schedule a virtual consultation.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="outline" className="rounded-none">
+              <Button variant="outline" className="rounded-lg">
                 Download PDF Guide
               </Button>
-              <Button className="rounded-none">
+              <Button className="rounded-lg">
                 Schedule Consultation
               </Button>
             </div>

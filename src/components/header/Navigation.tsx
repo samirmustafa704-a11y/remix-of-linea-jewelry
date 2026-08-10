@@ -84,7 +84,7 @@ const Navigation = () => {
         </div>
 
         <div className="absolute left-1/2 transform -translate-x-1/2">
-          <Link to="/" className="block">
+          <Link to="/" className="block dark:invert">
             <img src="/LINEA-1.svg" alt="LINEA" className="h-6 w-auto" />
           </Link>
         </div>
@@ -126,7 +126,7 @@ const Navigation = () => {
                   ))}
                 </ul>
               </div>
-              <div className="flex space-x-6">
+              <div className="flex gap-4 lg:gap-6 flex-1">
                 {navItems.find(item => item.name === activeDropdown)?.images.map((image, index) => {
                   let linkTo = "/";
                   if (activeDropdown === "Shop") {
@@ -139,7 +139,7 @@ const Navigation = () => {
                     linkTo = "/about/our-story";
                   }
                   return (
-                    <Link key={index} to={linkTo} className="w-[360px] h-[240px] cursor-pointer group relative overflow-hidden block rounded-2xl shadow-[0_4px_20px_-8px_hsl(25_30%_15%/0.18)] transition-all duration-500 hover:-translate-y-1">
+                    <Link key={index} to={linkTo} className="flex-1 min-w-0 aspect-[3/2] cursor-pointer group relative overflow-hidden block rounded-2xl shadow-[0_4px_20px_-8px_hsl(25_30%_15%/0.18)] transition-all duration-500 hover:-translate-y-1 max-w-xs">
                       <img src={image.src} alt={image.alt} className="w-full h-full object-cover rounded-2xl transition-transform duration-700 ease-out group-hover:scale-105" />
                       <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/45 via-transparent to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
                       {(activeDropdown === "Shop" || activeDropdown === "New in" || activeDropdown === "About") && (
@@ -167,7 +167,7 @@ const Navigation = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 text-nav-foreground mr-3">
                     <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                   </svg>
-                  <input type="text" placeholder="Search for jewelry..." className="flex-1 bg-transparent text-nav-foreground placeholder:text-nav-foreground/60 outline-none text-lg" autoFocus />
+                  <input type="text" placeholder="Search for jewelry..." className="flex-1 bg-transparent text-nav-foreground placeholder:text-nav-foreground/75 outline-none text-lg" autoFocus />
                 </div>
               </div>
               <div>

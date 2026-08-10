@@ -4,11 +4,13 @@ const Footer = () => {
       <div className="">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-8">
           <div>
+          <div className="dark:invert">
             <img
               src="/Linea_Jewelry_Inc-2.svg"
               alt="Linea Jewelry Inc."
               className="mb-4 h-6 w-auto"
             />
+          </div>
             <p className="text-sm font-light text-muted-foreground leading-relaxed max-w-md mb-6">
               Minimalist jewelry crafted for the modern individual
             </p>
@@ -62,9 +64,9 @@ const Footer = () => {
       <div className="border-t border-border -mx-6 px-6 pt-3">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <p className="text-xs font-light text-muted-foreground mb-1 md:mb-0">
-            © 2024 Linea. All rights reserved. Template made by{" "}
-            <a href="https://www.liljeros.co" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300 underline">
-              Rickard Liljeros
+            © 2024 Linea. All rights reserved. Built by{" "}
+            <a href="https://github.com/Mostafa-SAID7" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300 underline">
+              M.Said
             </a>
           </p>
           <div className="flex space-x-6">

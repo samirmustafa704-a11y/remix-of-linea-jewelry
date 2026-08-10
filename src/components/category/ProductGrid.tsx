@@ -75,7 +75,7 @@ const ProductCard = ({ product, index }: { product: Product; index: number }) =>
       <Link to={`/product/${product.id}`}>
         <Card className="border-none shadow-none bg-transparent group cursor-pointer transition-all duration-500 hover-lift">
           <CardContent className="p-0">
-            <div className="aspect-[3/4] mb-4 overflow-hidden bg-card relative rounded-2xl shadow-[0_2px_12px_-4px_hsl(25_30%_15%/0.06)]">
+            <div className="aspect-[3/4] mb-4 overflow-hidden bg-card relative rounded-2xl shadow-[0_4px_20px_-6px_hsl(25_30%_15%/0.08)] group-hover:shadow-[0_8px_24px_-8px_hsl(25_30%_15%/0.12)] transition-shadow duration-300">
               <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-all duration-700 group-hover:opacity-0 group-hover:scale-105" />
               <img src={product.category === "Earrings" ? organicEarring : linkBracelet} alt={`${product.name} lifestyle`} className="absolute inset-0 w-full h-full object-cover transition-all duration-700 opacity-0 group-hover:opacity-100 group-hover:scale-105" />
               {product.isNew && (
@@ -107,13 +107,17 @@ const ProductCard = ({ product, index }: { product: Product; index: number }) =>
 
 const ProductGrid = () => {
   return (
-    <section className="w-full px-6 mb-16">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+    <section className="w-full mb-16">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
         {products.map((product, index) => (
           <ProductCard key={product.id} product={product} index={index} />
         ))}
+        </div>
       </div>
-      <Pagination />
+      <div className="max-w-7xl mx-auto px-6">
+        <Pagination />
+      </div>
     </section>
   );
 };

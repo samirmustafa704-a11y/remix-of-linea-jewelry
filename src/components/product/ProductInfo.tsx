@@ -81,12 +81,12 @@ const ProductInfo = () => {
       <div className="space-y-4">
         <div className="flex items-center gap-4">
           <span className="text-sm font-light text-foreground">Quantity</span>
-          <div className="flex items-center border border-border">
-            <Button variant="ghost" size="sm" onClick={decrementQuantity} className="h-10 w-10 p-0 hover:bg-transparent hover:opacity-50 rounded-none border-none">
+          <div className="flex items-center border border-border/20 rounded-lg overflow-hidden shadow-xs">
+            <Button variant="ghost" size="sm" onClick={decrementQuantity} className="h-10 w-10 p-0 hover:bg-muted/30 hover:shadow-none rounded-none border-none">
               <Minus className="h-4 w-4" />
             </Button>
-            <span className="h-10 flex items-center px-4 text-sm font-light min-w-12 justify-center border-l border-r border-border">{quantity}</span>
-            <Button variant="ghost" size="sm" onClick={incrementQuantity} className="h-10 w-10 p-0 hover:bg-transparent hover:opacity-50 rounded-none border-none">
+            <span className="h-10 flex items-center px-4 text-sm font-light min-w-12 justify-center border-l border-r border-border/20">{quantity}</span>
+            <Button variant="ghost" size="sm" onClick={incrementQuantity} className="h-10 w-10 p-0 hover:bg-muted/30 hover:shadow-none rounded-none border-none">
               <Plus className="h-4 w-4" />
             </Button>
           </div>

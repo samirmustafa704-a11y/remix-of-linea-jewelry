@@ -108,9 +108,25 @@ export default {
   			}
   		},
   		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
+  			none: '0',
+  			sm: '0.375rem',     // 6px
+  			md: '0.5rem',       // 8px
+  			lg: '0.75rem',      // 12px
+  			xl: '1rem',         // 16px
+  			'2xl': '1.25rem',   // 20px
+  			'3xl': '1.5rem',    // 24px
+  			full: '9999px'
+  		},
+  		boxShadow: {
+  			'none': 'none',
+  			'xs': '0 1px 2px 0 hsl(25 30% 15% / 0.04)',
+  			'sm': '0 1px 2px 0 hsl(25 30% 15% / 0.06)',
+  			'md': '0 4px 6px -1px hsl(25 30% 15% / 0.08), 0 2px 4px -1px hsl(25 30% 15% / 0.04)',
+  			'lg': '0 10px 15px -3px hsl(25 30% 15% / 0.1), 0 4px 6px -2px hsl(25 30% 15% / 0.05)',
+  			'xl': '0 20px 25px -5px hsl(25 30% 15% / 0.1), 0 10px 10px -5px hsl(25 30% 15% / 0.04)',
+  			'2xl': '0 25px 50px -12px hsl(25 30% 15% / 0.15)',
+  			'product': '0 2px 12px -4px hsl(25 30% 15% / 0.08)',
+  			'product-hover': '0 8px 20px -4px hsl(25 30% 15% / 0.12)'
   		},
   		keyframes: {
   			'accordion-down': {
@@ -167,5 +183,6 @@ export default {
   		}
   	}
   },
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;

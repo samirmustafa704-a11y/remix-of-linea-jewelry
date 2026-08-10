@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0",
+  "branches": {
+    "master": "main",
+    "develop": "develop",
+    "feature": "feature/",
+    "release": "release/",
+    "hotfix": "hotfix/",
+    "support": "support/",
+    "bugfix": "bugfix/"
+  },
+  "prefixes": {
+    "feature": "feat: ",
+    "bugfix": "fix: ",
+    "release": "release: ",
+    "hotfix": "hotfix: ",
+    "support": "support: "
+  },
+  "tags": {
+    "prefix": "v",
+    "format": "v{major}.{minor}.{patch}"
+  }
+}
